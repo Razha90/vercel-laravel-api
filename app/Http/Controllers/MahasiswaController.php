@@ -28,6 +28,7 @@ class MahasiswaController extends Controller
         }
             $mahasiswa = mahasiswa::query();
             $search = $req->input('search');
+            $sort = $req->input('sort');
 
             if($search) {
                 $mahasiswa->where(function ($q) use ($search) {
@@ -42,7 +43,11 @@ class MahasiswaController extends Controller
                 $response = ['message' => 'Data not found'];
                 return response()->json($response, 204);
             }
-            $mahasiswa = $mahasiswa->orderBy('nama', 'asc'); 
+            if ($sort != 'desc') {
+                $mahasiswa = $mahasiswa->orderBy('nama', 'asc'); 
+            } else {
+                $mahasiswa = $mahasiswa->orderBy('nama', 'desc'); 
+            }
             $mahasiswa = $mahasiswa->paginate(10);
 
             $response = [

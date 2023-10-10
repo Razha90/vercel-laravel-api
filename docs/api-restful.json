@@ -1,0 +1,1580 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"API Poject",
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"http://localhosyt:8000"}
+    ],
+    "paths": {
+        "/api/mahasiswa": {
+            "get":{
+                "description": "Get All Data Mahasiswa",
+                "parameters": [
+
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search Mahasiswa",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type Search Mahasiswa",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa Rettrieved Sucessfully",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "alamat":"Jl.Subrono"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204":{
+                        "description": "Sucessfully But Nothing To Display",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Not Found Anything in Mahasiswa"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Problem in Server",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Internal server error occurred"
+                                }
+                            }
+                        }
+                    }     
+                }
+            },
+            "post": {
+            "description": "Create Mahasiswa Data",
+            "requestBody":{
+                "required": true,
+                "content": {
+                    "application/json":{
+                        "schema":{
+                            "type": "object",
+                            "properties": {
+                                "nim":{
+                                    "type": "integer"
+                                },
+                                "nama":{
+                                    "type": "string"
+                                },
+                                "kontak":{
+                                    "type": "integer"
+                                },
+                                "email":{
+                                    "type": "string"
+                                },
+                                "alamat":{
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201":{
+                    "description": "Succes Create Mahasiswa",
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "alamat":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "400":{
+                    "description": "Bad request, data validation failed",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "message": "Validation failed",
+                                "errors": [
+                                    "Nama tidak boleh kosong",
+                                    "Jurusan tidak valid"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "500":{
+                    "description": "Problem in Server",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "error": "Internal server error occurred"
+                            }
+                        }
+                    }
+                }  
+            }
+            }
+        },
+        "/api/mahasiswa/{id}": {
+            "get":{
+                "description": "Get Data Mahasiswa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Mahasiswa"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa Rettrieved Sucessfully",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "alamat":"Jl.Subrono"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Database Not Found Your Acess Data"
+                                }
+                            }
+                        }
+                    }
+                }                
+            },
+            "delete":{
+                "description": "Delete Data",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Mahasiswa"
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Delete Data Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa Sucessfully Delete",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "alamat":"Jl.Subrono"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Data",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Not Found Data"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description": "Update Data Mahasiswa",
+                "requestBody": {
+                    "description": "Updated Mahasiswa data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "alamat":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "alamat":"Jl.Subrono"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Mahasiswa"
+                    }
+                ]
+            },
+            "patch":{
+                "description": "Update Data Mahasiswa",
+                "requestBody": {
+                    "description": "Updated Mahasiswa data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "alamat":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "alamat":"Jl.Subrono"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Mahasiswa"
+                    }
+                ]
+            }
+        },
+        "/api/dosen": {
+            "get":{
+                "description": "Get All Data dosen",
+                "parameters": [
+
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search dosen",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type Search dosen",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data dosen Rettrieved Sucessfully",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "bidang_studi":"Matematika"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204":{
+                        "description": "Sucessfully But Nothing To Display",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Not Found Anything in dosen"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Problem in Server",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Internal server error occurred"
+                                }
+                            }
+                        }
+                    }     
+                }
+            },
+            "post": {
+            "description": "Create dosen Data",
+            "requestBody":{
+                "required": true,
+                "content": {
+                    "application/json":{
+                        "schema":{
+                            "type": "object",
+                            "properties": {
+                                "nim":{
+                                    "type": "integer"
+                                },
+                                "nama":{
+                                    "type": "string"
+                                },
+                                "kontak":{
+                                    "type": "integer"
+                                },
+                                "email":{
+                                    "type": "string"
+                                },
+                                "bidang_studi":{
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201":{
+                    "description": "Succes Create dosen",
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "bidang_studi":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "400":{
+                    "description": "Bad request, data validation failed",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "message": "Validation failed",
+                                "errors": [
+                                    "Nama tidak boleh kosong",
+                                    "Jurusan tidak valid"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "500":{
+                    "description": "Problem in Server",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "error": "Internal server error occurred"
+                            }
+                        }
+                    }
+                }  
+            }
+            }
+        },
+        "/api/dosen/{id}": {
+            "get":{
+                "description": "Get Data dosen",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the dosen"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data dosen Rettrieved Sucessfully",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "bidang_studi":"Matematika"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Database Not Found Your Acess Data"
+                                }
+                            }
+                        }
+                    }
+                }                
+            },
+            "delete":{
+                "description": "Delete Data",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the dosen"
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Delete Data Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data dosen Sucessfully Delete",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "bidang_studi":"Matematika"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Data",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Not Found Data"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description": "Update Data dosen",
+                "requestBody": {
+                    "description": "Updated dosen data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "bidang_studi":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data dosen Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "bidang_studi":"Matematika"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the dosen"
+                    }
+                ]
+            },
+            "patch":{
+                "description": "Update Data dosen",
+                "requestBody": {
+                    "description": "Updated dosen data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "bidang_studi":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data dosen Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "nim":1,
+                                            "nama":"Agus Sumanto",
+                                            "kontak":"0895626199020",
+                                            "email":"razha@gmail.com",
+                                            "bidang_studi":"Matematika"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the dosen"
+                    }
+                ]
+            }
+        },
+        "/api/dosen-pembimbing": {
+            "description":"Take Data Dosen be Lecture from Mahasiswa",
+            "get":{
+                "description": "Get All Data Dosen",
+                "parameters": [
+
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search Mahasiswa or Dosen Name",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucessfully Rettrieved Data",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "nim":{
+                                            "type": "integer"
+                                        },
+                                        "nama":{
+                                            "type": "string"
+                                        },
+                                        "kontak":{
+                                            "type": "integer"
+                                        },
+                                        "email":{
+                                            "type": "string"
+                                        },
+                                        "bidang_studi":{
+
+                                        },
+                                        "mahasiswa":{
+                                            "type": "object",
+                                            "properties": {
+                                                "nim":{
+                                                    "type": "integer"
+                                                },
+                                                "nama":{
+                                                    "type": "string"
+                                                },
+                                                "kontak":{
+                                                    "type": "integer"
+                                                },
+                                                "email":{
+                                                    "type": "string"
+                                                },
+                                                "alamat":{
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Data Dosen or Mahasiswa Not Found"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post":{
+                "description": "Update Table Dosen Pembimbing",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "kode":{
+                                        "type": "integer"
+                                    },
+                                    "id_dosen":{
+                                        "type": "integer"
+                                    },
+                                    "id_mahasiswa":{
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201":{
+                        "description": "Sucessfully Create Data",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "kode":{
+                                            "type": "integer"
+                                        },
+                                        "id_dosen":{
+                                            "type": "integer"
+                                        },
+                                        "id_mahasiswa":{
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Data Dosen or Mahasiswa Not Found"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dosen-pembimbing/{id}":{
+            "delete":{
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the dosen"
+                    }
+                ],
+                "description": "Delete Data From Dosen Pembimbing",
+                "responses": {
+                    "204":{
+                        "description": "Sucessfully Delete"
+                    },
+                    "404":{
+                        "description": "Not Found Data To Delete",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Not Found Data"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "kode":{
+                                        "type": "integer"
+                                    },
+                                    "id_dosen":{
+                                        "type": "integer"
+                                    },
+                                    "id_mahasiswa":{
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Dosen Pembimbing Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "id_dosen":2,
+                                            "id_mahasiswa":3
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the dosen"
+                    }
+                ]
+            
+            }
+        },
+        "/api/matakuliah": {
+            "get":{
+                "description": "Get All Data Matakuliah",
+                "parameters": [
+
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search Matakuliah",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Matakulia Rettrieved Sucessfully",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "nama_matakuliah":"Matematika",
+                                            "daya_tampung":"30",
+                                            "jadwal":"12-09-2003",
+                                            "id_dosen":2
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204":{
+                        "description": "Sucessfully But Nothing To Display",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Not Found Anything in Matakuliah"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Problem in Server",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Internal server error occurred"
+                                }
+                            }
+                        }
+                    }     
+                }
+            },
+            "post": {
+            "description": "Create Matakuliah Data",
+            "requestBody":{
+                "required": true,
+                "content": {
+                    "application/json":{
+                        "schema":{
+                            "type": "object",
+                            "properties": {
+                                "kode":{
+                                    "type": "integer"
+                                },
+                                "nama_matakuliah":{
+                                    "type": "string"
+                                },
+                                "daya_tampung":{
+                                    "type": "integer"
+                                },
+                                "jadwal":{
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201":{
+                    "description": "Succes Create Matakuliah",
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "kode":{
+                                        "type": "integer"
+                                    },
+                                    "nama_matakuliah":{
+                                        "type": "string"
+                                    },
+                                    "daya_tampung":{
+                                        "type": "integer"
+                                    },
+                                    "jadwal":{
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "400":{
+                    "description": "Bad request, data validation failed",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "errors": "Data Validation error"
+                            }
+                        }
+                    }
+                },
+                "500":{
+                    "description": "Problem in Server",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "error": "Internal server error occurred"
+                            }
+                        }
+                    }
+                }  
+            }
+            }
+        },
+        "/api/matakuliah/{id}": {
+            "delete":{
+                "description": "Delete Data",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Matakuliah"
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Delete Data Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa Sucessfully Delete",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "nama_matakuliah":"Matematika",
+                                            "daya_tampung":"30",
+                                            "jadwal":"12-09-2003",
+                                            "id_dosen":2
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Data",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Not Found Data"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description": "Update Data Matakuliah",
+                "requestBody": {
+                    "description": "Updated Matakuliah data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "kode":{
+                                            "type": "integer"
+                                        },
+                                        "nama_matakuliah":{
+                                            "type": "string"
+                                        },
+                                        "daya_tampung":{
+                                            "type": "integer"
+                                        },
+                                        "jadwal":{
+                                            "type": "string"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Matakuliah Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "nama_matakuliah":"Matematika",
+                                            "daya_tampung":"30",
+                                            "jadwal":"12-09-2003",
+                                            "id_dosen":2
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Matakuliah"
+                    }
+                ]
+            }
+        },
+        "/api/matakuliah-mahasiswa": {
+            "get":{
+                "description": "Get All Data Mahasiswa From Matakuliah",
+                "parameters": [
+
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search Matakuliah",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Mahasiswa to Matakuliah Rettrieved Sucessfully",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "nama_matakuliah":"Matematika",
+                                            "daya_tampung":"30",
+                                            "jadwal":"12-09-2003",
+                                            "id_dosen":2,
+                                            "mahasiswa": [
+                                                {
+                                                    "nim":1,
+                                                    "nama":"Agus Sumanto",
+                                                    "kontak":"0895626199020",
+                                                    "email":"razha@gmail.com",
+                                                    "alamat":"Jl.Subrono"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204":{
+                        "description": "Sucessfully But Nothing To Display",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Not Found Anything in Matakuliah"
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description": "Problem in Server",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "Internal server error occurred"
+                                }
+                            }
+                        }
+                    }     
+                }
+            },
+            "post": {
+            "description": "Create Matakuliah Data",
+            "requestBody":{
+                "required": true,
+                "content": {
+                    "application/json":{
+                        "schema":{
+                            "type": "object",
+                            "properties": {
+                                "kode":{
+                                    "type": "integer"
+                                },
+                                "id_matakuliah":{
+                                    "type": "string"
+                                },
+                                "id_mahasiswa":{
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201":{
+                    "description": "Succes Create Matakuliah",
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "kode":{
+                                        "type": "integer"
+                                    },
+                                    "id_matakuliah":{
+                                        "type": "integer"
+                                    },
+                                    "id_mahasiswa":{
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "400":{
+                    "description": "Bad request, data validation failed",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "errors": "Data Validation error"
+                            }
+                        }
+                    }
+                },
+                "500":{
+                    "description": "Problem in Server",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "error": "Internal server error occurred"
+                            }
+                        }
+                    }
+                }  
+            }
+            }
+        },
+        "/api/matakuliah-mahasiswa/{id}": {
+            "delete":{
+                "description": "Delete Data",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Matakuliah"
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Delete Data Sucessfully",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Table Matakuliah_Mahaiswa Sucessfully Delete",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "id_mahasiswa":2,
+                                            "id_matakuliah":2
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found Data",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error":"Not Found Data"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put":{
+                "description": "Update Data Matakuliah",
+                "requestBody": {
+                    "description": "Updated Matakuliah data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                        "kode":{
+                                            "type": "integer"
+                                        },
+                                        "id_matakuliah":{
+                                            "type": "integer"
+                                        },
+                                        "id_mahasiswa":{
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Data Sucessfully Update",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "message":"Data Matakuliah_Mahaiswa Sucessfully Update",
+                                    "data":[
+                                        {
+                                            "kode":1,
+                                            "id_mahasiswa":2,
+                                            "id_matakuliah":2
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Send Empty",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" : "Data Send Empty"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json":{
+                                "example":{
+                                    "error" :"Data Not Found"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of the Matakuliah"
+                    }
+                ]
+            }
+        }
+
+    }
+  }

@@ -28,6 +28,7 @@ class DosenController extends Controller
         }
             $dosen = Dosen::query();
             $search = $req->input('search');
+            $sort = $req->input('sort');
 
             if($search) {
                 $dosen->where(function ($q) use ($search) {
@@ -43,7 +44,11 @@ class DosenController extends Controller
                 $response = ['message' => 'Data not found'];
                 return response()->json($response, 204);
             }
-            $dosen = $dosen->orderBy('nama', 'asc'); 
+            if ($sort != 'desc') {
+                $dosen = $dosen->orderBy('nama', 'asc'); 
+            } else {
+                $dosen = $dosen->orderBy('nama', 'desc'); 
+            } 
             $dosen = $dosen->paginate(10);
 
             $response = [

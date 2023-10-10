@@ -29,6 +29,8 @@ class DosenPembimbingController extends Controller
         }
         $query = Dosen::select(['dosen.nim', 'dosen.nama', 'dosen.kontak', 'dosen.email', 'dosen.bidang_studi', 'mahasiswa.nama'])->leftJoin('mahasiswa', 'mahasiswa.nim', '=', 'dosen.nim');
         $search = $request->input('search');
+        $sort = $request->input('sort');
+
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->where('dosen.nim', 'like', "%$search%")
@@ -37,7 +39,12 @@ class DosenPembimbingController extends Controller
                     ->orWhere('dosen.email', 'like', "%$search%");
             });
         }
-        $query->with('mahasiswa');
+        if ($sort != 'desc') {
+            $query = $query->orderBy('nama', 'asc'); 
+        } else {
+            $query = $query->orderBy('nama', 'desc'); 
+        }
+        $query->with('query');
         $query = $query->paginate(10);
         $response = [
             "message" => "Data Successfully Retrieved",
