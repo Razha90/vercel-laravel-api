@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\DosenPembimbingController;
+use App\Http\Controllers\Matakuliah_MahasiswaController;
+use App\Http\Controllers\MatakuliahController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +28,26 @@ Route::post('/dosen', [DosenController::class, 'store']);
 Route::put('/dosen/{id}', [DosenController::class, 'update']);
 Route::patch('/dosen/{id}', [DosenController::class, 'update']);
 Route::delete('/dosen/{id}', [DosenController::class, 'destroy']);
+
+Route::get('/mahasiswa', [MahasiswaController::class, 'index']);
+Route::get('/mahasiswa/{id}', [MahasiswaController::class, 'show']);
+Route::post('/mahasiswa', [MahasiswaController::class, 'store']);
+Route::put('/mahasiswa/{id}', [MahasiswaController::class, 'update']);
+Route::patch('/mahasiswa/{id}', [MahasiswaController::class, 'update']);
+Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy']);
+
+Route::get('/dosen-pembimbing', [DosenPembimbingController::class, 'index']);
+Route::post('/dosen-pembimbing', [DosenPembimbingController::class, 'store']);
+Route::put('/dosen-pembimbing/{id}', [DosenPembimbingController::class, 'update']);
+Route::delete('/dosen-pembimbing/{id}', [DosenPembimbingController::class, 'destroy']);
+
+Route::get('/matakuliah-mahasiswa', [Matakuliah_MahasiswaController::class, 'index']);
+Route::post('/matakuliah-mahasiswa', [Matakuliah_MahasiswaController::class, 'store']);
+Route::put('/matakuliah-mahasiswa/{id}', [Matakuliah_MahasiswaController::class, 'update']);
+Route::delete('/matakuliah-mahasiswa/{id}', [Matakuliah_MahasiswaController::class, 'destroy']);
+
+Route::get('/matakuliah', [MatakuliahController::class, 'index']);
+Route::post('/matakuliah', [MatakuliahController::class, 'store']);
+Route::put('/matakuliah/{id}', [MatakuliahController::class, 'update']);
+Route::delete('/matakuliah/{id}', [MatakuliahController::class, 'destroy']);
+Route::get('/matakuliah/{id}', [MatakuliahController::class, 'show']);
