@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dosen_pembimbing', function (Blueprint $table) {
+        Schema::create('dosen_matakuliah', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_dosen');
             $table->foreign('id_dosen')->references('nim')->on('dosen')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('id_mahasiswa');
-            $table->foreign('id_mahasiswa')->references('nim')->on('mahasiswa')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('id_matakuliah');
+            $table->foreign('id_matakuliah')->references('kode')->on('matakuliah')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dosen_pembimbing');
+        Schema::dropIfExists('dosen_matakuliah');
     }
 };

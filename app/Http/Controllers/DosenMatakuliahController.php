@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
-use App\Models\DosenPembimbing;
+use App\Models\DosenMatakuliah;
 use App\Models\mahasiswa;
+use App\Models\Matakuliah;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
-class DosenPembimbingController extends Controller
+class DosenMatakuliahController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     protected function Database() {
         try {
             DB::connection()->getPdo();
@@ -22,46 +21,19 @@ class DosenPembimbingController extends Controller
             return false;
         }
     }
-
-    public function show(string $id) {
-        if (!$this->Database()) {
-            return response()->json(['message' => 'Failed to connect to the database'], 500);
-        }
-        $dosen = DosenPembimbing::find($id);
-
-        if ($dosen == null) {
-            $response = [
-                'error' => "Data Not Found",
-            ];
-            return response()->json($response, 404);
-        }
-
-        $dosenData = Dosen::find($dosen->id_dosen);
-        $mahasiswa = mahasiswa::find($dosen->id_mahasiswa);
-        $dosen->dosen = $dosenData;
-        $dosen->mahasiswa = $mahasiswa;
-        // $dosen->load('mahasiswa');
-        $response = [
-            "message" => "Data Successfully Retrieved",
-            "data" => $dosen
-        ];
-        return response()->json($response, 200);
-
-    }
-
     public function index(Request $request)
     {
         if (!$this->Database()) {
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
-        $query = Dosen::select(['dosen.nim', 'dosen.nama', 'dosen.kontak', 'dosen.email', 'mahasiswa.nama'])->leftJoin('mahasiswa', 'mahasiswa.nim', '=', 'dosen.nim');
+
+        $query = Dosen::select(['dosen.nim', 'dosen.nama', 'dosen.kontak', 'dosen.email', 'matakuliah.nama_matakuliah'])->leftJoin('matakuliah', 'matakuliah.kode', '=', 'dosen.nim');
         if ($query->count() == 0) {
             $response = [
                 'error' => "Data Dosen Not Found",
             ];
             return response()->json($response, 404);
         }
-        
         $search = $request->input('search');
         $sort = $request->input('sort');
 
@@ -73,20 +45,28 @@ class DosenPembimbingController extends Controller
                     ->orWhere('dosen.email', 'like', "%$search%");
             });
         }
+
         if ($sort != 'desc') {
             $query = $query->orderBy('dosen.nama', 'asc'); 
         } else {
             $query = $query->orderBy('dosen.nama', 'desc'); 
         }
 
-        $query->with('mahasiswa');
+        $query->with('matakuliah');
         $query = $query->paginate(10);
         $response = [
             "message" => "Data Successfully Retrieved",
             "data" => $query
         ];
         return response()->json($response, 200);
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -98,9 +78,9 @@ class DosenPembimbingController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
         $validator = Validator::make($request->all(),[
-            'id' => "required|unique:dosen_pembimbing,id",
+            'id' => "required|unique:dosen_matakuliah,id",
             "id_dosen" => "required|exists:dosen,nim",
-            "id_mahasiswa" => "required|exists:mahasiswa,nim"
+            "id_matakuliah" => "required|exists:matakuliah,kode"
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -108,29 +88,67 @@ class DosenPembimbingController extends Controller
 
         $kode = $request->input('id');
         $id_dosen = $request->input('id_dosen');
-        $id_mahasiswa = $request->input('id_mahasiswa');
+        $id_matakuliah = $request->input('id_matakuliah');
 
-        $dosenPembimbing = new DosenPembimbing;
+        $dosenPembimbing = new DosenMatakuliah;
         $dosenPembimbing->id = $kode;
         $dosenPembimbing->id_dosen = $id_dosen;
-        $dosenPembimbing->id_mahasiswa = $id_mahasiswa;
+        $dosenPembimbing->id_matakuliah = $id_matakuliah;
 
         if (!$dosenPembimbing->save()) {
             return response()->json(['error' => 'Failed to save, Database Server Problem'], 500);
         };
         $dosen = Dosen::find($id_dosen);
-        $mahasiswa = mahasiswa::find($id_mahasiswa);
+        $matakuliah = Matakuliah::find($id_matakuliah);
 
         $response = [
             'message' => 'Data Dosen Successfully Created',
             'data' => [
                 "id" => $kode,
                 "id_dosen" => $dosen->nama,
-                "id_mahasiswa" => $mahasiswa->nama
+                "id_matakuliah" => $matakuliah->nama_matakuliah
             ]
         ];
         return response()->json($response, 201);
 
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        if (!$this->Database()) {
+            return response()->json(['message' => 'Failed to connect to the database'], 500);
+        }
+        $dosen = DosenMatakuliah::find($id);
+
+        if ($dosen == null) {
+            $response = [
+                'error' => "Data Not Found",
+            ];
+            return response()->json($response, 404);
+        }
+        $dosenData = Dosen::find($dosen->id_dosen);
+        $matakuliah = Matakuliah::find($dosen->id_matakuliah);
+
+        $dosen->dosen = $dosenData;
+        $dosen->matakuliah = $matakuliah;
+        // $dosen->load('matakuliah');
+        $response = [
+            "message" => "Data Successfully Retrieved",
+            "data" => $dosen
+        ];
+        return response()->json($response, 200);
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
     }
 
     /**
@@ -142,30 +160,30 @@ class DosenPembimbingController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
         $validator = Validator::make($request->all(),[
-            'id' => "required|unique:dosen_pembimbing,id",
+            'id' => "required|unique:dosen_matakuliah,id",
             "id_dosen" => "required|exists:dosen,nim",
-            "id_mahasiswa" => "required|exists:mahasiswa,nim"
+            "id_matakuliah" => "required|exists:matakuliah,kode"
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
-        $dosenPembimbing = DosenPembimbing::where('id',$id);
-        if ($dosenPembimbing == null) {
+        $dosenMatakuliah = DosenMatakuliah::where('id',$id);
+        if ($dosenMatakuliah == null) {
             return response()->json(['error'=>'Cannot Find Id'], 404);
         }
-        $dosenPembimbing->update($request->all());
+        $dosenMatakuliah->update($request->all());
         $id_dosen = $request->input('id_dosen');
-        $id_mahasiswa = $request->input('id_mahasiswa');
+        $id_matakuliah = $request->input('id_matakuliah');
 
         $dosen = Dosen::find($id_dosen);
-        $mahasiswa = mahasiswa::find($id_mahasiswa);
+        $matakuliah = Matakuliah::find($id_matakuliah);
         $kode = $request->input('id');
         $response = [
             'message' => 'Data Dosen Successfully Update',
             'data' => [
                 "id" => $kode,
                 "id_dosen" => $dosen->nama,
-                "id_mahasiswa" => $mahasiswa->nama
+                "id_matakuliah" => $matakuliah->nama_matakuliah
             ]
         ];
         return response()->json($response, 201);
@@ -179,8 +197,8 @@ class DosenPembimbingController extends Controller
         if (!$this->Database()) {
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
-        $dosenPembimbing = DosenPembimbing::where('id',$id);
-        if (!$dosenPembimbing->delete()) {
+        $dosenMatakuliah = DosenMatakuliah::where('id',$id);
+        if (!$dosenMatakuliah->delete()) {
             return response()->json(['error'=>'Delete is Failed'], 404);
         }
 

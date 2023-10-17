@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DosenPembimbing extends Model
+class DosenMatakuliah extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id';
-    protected $table = 'dosen_pembimbing';
+    protected $table = 'dosen_matakuliah';
     public $timestamps = true;
     public $incrementing = true;
     protected $fillable = [
         'id',
         'id_dosen',
-        'id_mahasiswa'
+        'id_matakuliah',
     ];
 }

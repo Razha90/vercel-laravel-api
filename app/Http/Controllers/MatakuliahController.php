@@ -35,9 +35,6 @@ class MatakuliahController extends Controller
             return response()->json($response, 404);
         }
         
-        $matakuliah->mahasiswa = 
-            $matakuliah->dosen()->get()
-        ;
         $response = [
             'message' => 'Successfully Show Data',
             'data' => $matakuliah
@@ -46,19 +43,38 @@ class MatakuliahController extends Controller
         return response()->json($response, 200);
     }
 
-    public function index()
+    public function index(Request $req)
     {
-        if (!$this->Database()) {
-            return response()->json(['message' => 'Failed to connect to the database'], 500);
+        $matakuliah = Matakuliah::query();
+        $search = $req->input('search');
+        $sort = $req->input('sort');
+
+        if($search) {
+            $matakuliah->where(function ($q) use ($search) {
+                $q->where('kode', 'like', '%' . $search . '%')
+                    ->orWhere('nama_matakuliah', 'like', '%' . $search . '%')
+                    ->orWhere('daya_tampung', 'like', '%' . $search . '%');
+            });
         }
-        
-        $matakuliah = Matakuliah::with('dosen')->paginate(10);
-        
+
+        if ($matakuliah->count() == 0) {
+            $response = ['message' => 'Data not found'];
+            return response()->json($response, 204);
+        }
+
+        if ($sort != 'desc') {
+            $matakuliah = $matakuliah->orderBy('nama_matakuliah', 'asc'); 
+        } else {
+            $matakuliah = $matakuliah->orderBy('nama_matakuliah', 'desc'); 
+        } 
+        $matakuliah = $matakuliah->paginate(10);
+
         $response = [
-            'message' => 'Database Successfully Retrieved',
-            'data' => $matakuliah
+            'message' => "Data Dosen Successfully Retrieved",
+            "data" => $matakuliah
         ];
-        return response()->json($response, 200);
+        return response()-> json($response, 200);
+
     }
 
     public function store(Request $request)
@@ -70,24 +86,22 @@ class MatakuliahController extends Controller
             'kode' => "required|unique:matakuliah,kode",
             'nama_matakuliah' => 'required|max:100',
             "daya_tampung" => 'required|numeric',
-            'jadwal'=> 'required',
-            "id_dosen" => "required|exists:dosen,nim"
+            'jadwal'=> 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
+
         $matakuliah = new Matakuliah;
         $kode = $request->input('kode');
         $nama_matakuliah = $request->input('nama_matakuliah');
         $daya_tampung = $request->input('daya_tampung');
         $jadwal = $request->input('jadwal');
-        $id_dosen = $request->input('id_dosen');
 
         $matakuliah->kode = $request->input('kode');
         $matakuliah->nama_matakuliah = $request->input('nama_matakuliah');
         $matakuliah->daya_tampung = $request->input('daya_tampung');
         $matakuliah->jadwal = $request->input('jadwal');
-        $matakuliah->id_dosen = $request->input('id_dosen');
 
         if (!$matakuliah->save()) {
             return response()->json(['error' => 'Failed to save Dosen, Database Server Problem'], 500);
@@ -100,7 +114,6 @@ class MatakuliahController extends Controller
                 "nama_matakuliah" => $nama_matakuliah,
                 "daya_tampung" => $daya_tampung,
                 "jadwal" => $jadwal,
-                "id_dosen" => $id_dosen
             ]
         ];
         return response()->json($response, 201);
@@ -117,7 +130,6 @@ class MatakuliahController extends Controller
             'nama_matakuliah' => 'required|max:100',
             "daya_tampung" => 'required|numeric',
             'jadwal'=> 'required',
-            "id_dosen" => "required|exists:dosen,nim"
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
@@ -129,7 +141,6 @@ class MatakuliahController extends Controller
         $nama_matakuliah = $request->input('nama_matakuliah');
         $daya_tampung = $request->input('daya_tampung');
         $jadwal = $request->input('jadwal');
-        $id_dosen = $request->input('id_dosen');
 
         if (!$matakuliah->update($request->all())) {
             return response()->json(['error' => 'Failed to save Dosen, Database Server Problem'], 500);
@@ -142,7 +153,6 @@ class MatakuliahController extends Controller
                 "nama_matakuliah" => $nama_matakuliah,
                 "daya_tampung" => $daya_tampung,
                 "jadwal" => $jadwal,
-                "id_dosen" => $id_dosen
             ]
         ];
         

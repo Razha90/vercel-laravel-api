@@ -17,7 +17,6 @@ class Dosen extends Model
         'nama',
         'kontak',
         'email',
-        'bidang_studi'
     ];
 
     public function mahasiswa(){
@@ -25,7 +24,7 @@ class Dosen extends Model
     }
 
     public function matakuliah() {
-        return $this->hasMany(Matakuliah::class, 'id_dosen');
+        return $this->belongsToMany(Matakuliah::class, 'dosen_matakuliah', 'id_dosen', 'id_matakuliah');
     }
 }
 

@@ -9,12 +9,12 @@ class Matakuliah_Mahasiswa extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'kode';
+    protected $primaryKey = 'id';
     protected $table = 'matakuliah_mahasiswa';
     public $timestamps = true;
     public $incrementing = true;
     protected $fillable = [
-        'kode',
+        'id',
         'id_mahasiswa',
         'id_matakuliah'
     ];

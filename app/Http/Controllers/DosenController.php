@@ -35,8 +35,7 @@ class DosenController extends Controller
                     $q->where('nim', 'like', '%' . $search . '%')
                         ->orWhere('nama', 'like', '%' . $search . '%')
                         ->orWhere('kontak', 'like', '%' . $search . '%')
-                        ->orWhere('email', 'like', '%' . $search . '%')
-                        ->orWhere('bidang_studi', 'like', '%' . $search . '%');
+                        ->orWhere('email', 'like', '%' . $search . '%');
                 });
             }
             
@@ -56,8 +55,6 @@ class DosenController extends Controller
                 "data" => $dosen
             ];
             return response()-> json($response, 200);
-
-        
     }
 
     public function store(Request $request)
@@ -69,8 +66,7 @@ class DosenController extends Controller
                 'nim' => 'required|unique:dosen,nim',
                 'nama' => 'required|string|max:100',
                 'kontak' => 'required|numeric',
-                'email' => 'required|email|unique:dosen,email',
-                'bidang_studi' => 'nullable|string|max:100',
+                'email' => 'required|email|unique:dosen,email'
             ]);
         
             if ($validator->fails()) {
@@ -81,14 +77,12 @@ class DosenController extends Controller
             $nama = $request->input('nama');
             $kontak = $request->input('kontak');
             $email = $request->input('email');
-            $bidang_studi = $request->input('bidang_studi');
     
             $dosen = new Dosen;
             $dosen->nim = $nim;
             $dosen->nama = $nama;
             $dosen->kontak = $kontak;
             $dosen->email = $email;
-            $dosen->bidang_studi = $bidang_studi;
         
             if (!$dosen->save()) {
                 return response()->json(['error' => 'Failed to save Dosen, Database Server Problem'], 500);
@@ -100,7 +94,6 @@ class DosenController extends Controller
                     "nama" => $nama,
                     "kontak" => $kontak,
                     "email" => $email,
-                    "bidang_studi" => $bidang_studi
                 ]
             ];
             return response()->json($response, 201);
@@ -145,7 +138,6 @@ class DosenController extends Controller
                 'nama' => 'required|string|max:100',
                 'kontak' => 'required|numeric',
                 'email' => 'required|email|unique:dosen,email',
-                'bidang_studi' => 'required|nullable|string|max:100',
             ]);
         
             if ($validator->fails()) {
@@ -158,7 +150,6 @@ class DosenController extends Controller
                 'nama' => 'sometimes|required|string|max:100',
                 'kontak' => 'sometimes|required|numeric',
                 'email' => 'sometimes|required|email|unique:dosen,email,' . $id,
-                'bidang_studi' => 'sometimes|required|nullable|string|max:100',
             ]);
             
             if ($validator->fails()) {

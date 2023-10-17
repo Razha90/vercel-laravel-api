@@ -22,15 +22,78 @@ class Matakuliah_MahasiswaController extends Controller
             return false;
         }
     }
-    public function index()
+
+    public function show(string $id)
     {
         if (!$this->Database()) {
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
+        $matakuliah = Matakuliah_Mahasiswa::find($id);
 
-        $matakuliah = Matakuliah::with('mahasiswa')->get();
-        return $matakuliah;
+        if ($matakuliah == null) {
+            $response = [
+                'error' => "Data Not Found",
+            ];
+            return response()->json($response, 404);
+        }
+
+        $matakuliahData = Matakuliah::find($matakuliah->id_matakuliah);
+        $mahasiswa = mahasiswa::find($matakuliah->id_mahasiswa);
+        $matakuliah->matakuliah = $matakuliahData;
+        $matakuliah->mahasiswa = $mahasiswa;
+        // $dosen->load('mahasiswa');
+        $response = [
+            "message" => "Data Successfully Retrieved",
+            "data" => $matakuliah
+        ];
+        return response()->json($response, 200);
+
     }
+    public function index(Request $request)
+    {
+        if (!$this->Database()) {
+            return response()->json(['message' => 'Failed to connect to the database'], 500);
+        }
+        $query = Matakuliah::select(['matakuliah.kode', 'matakuliah.nama_matakuliah', 'matakuliah.daya_tampung', 'matakuliah.jadwal']);
+        if ($query->count() == 0) {
+            $response = [
+                'error' => "Data Matakuliah Not Found",
+            ];
+            return response()->json($response, 404);
+        }
+        
+        $search = $request->input('search');
+        $sort = $request->input('sort');
+
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('matakuliah.kode', 'like', "%$search%")
+                    ->orWhere('matakuliah.nama_matakuliah', 'like', "%$search%");
+            });
+        }
+        if ($sort != 'desc') {
+            $query = $query->orderBy('matakuliah.nama_matakuliah', 'asc'); 
+        } else {
+            $query = $query->orderBy('matakuliah.nama_matakuliah', 'desc'); 
+        }
+
+        $query->with('mahasiswa');
+        $query = $query->paginate(10);
+        $response = [
+            "message" => "Data Successfully Retrieved",
+            "data" => $query
+        ];
+        return response()->json($response, 200);
+
+    }
+    // {
+    //     if (!$this->Database()) {
+    //         return response()->json(['message' => 'Failed to connect to the database'], 500);
+    //     }
+
+    //     $matakuliah = Matakuliah::with('mahasiswa')->get();
+    //     return $matakuliah;
+    // }
 
     /**
      * Store a newly created resource in storage.

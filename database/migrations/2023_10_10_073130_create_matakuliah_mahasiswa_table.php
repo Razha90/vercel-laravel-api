@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('matakuliah_mahasiswa', function (Blueprint $table) {
-            $table->id('kode');
+            $table->id();
             $table->unsignedBigInteger('id_mahasiswa');
             $table->unsignedBigInteger('id_matakuliah');
-            $table->foreign('id_matakuliah')->references('kode')->on('matakuliah');
-            $table->foreign('id_mahasiswa')->references('nim')->on('mahasiswa');
+            $table->foreign('id_matakuliah')->references('kode')->on('matakuliah')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_mahasiswa')->references('nim')->on('mahasiswa')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

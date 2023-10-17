@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('nama_matakuliah', 100)->nullable(false);
             $table->bigInteger('daya_tampung')->unsigned();
             $table->dateTime("jadwal");
-            $table->unsignedBigInteger('id_dosen');
-            $table->foreign('id_dosen')->references('nim')->on('dosen');
             $table->timestamps();
         });
     }

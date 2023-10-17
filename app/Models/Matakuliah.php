@@ -19,8 +19,10 @@ class Matakuliah extends Model
         'daya_tampung',
         'id_dosen'
     ];
-    public function dosen(){
-        return $this->belongsTo(Dosen::class,'id_dosen');
+
+
+    public function dosen() {
+        return $this->belongsToMany(Dosen::class, 'dosen_matakuliah', 'id_matakuliah', 'id_dosen');
     }
 
     public function mahasiswa() {

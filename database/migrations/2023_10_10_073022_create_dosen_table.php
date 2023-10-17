@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('nama', 100)->nullable(false);
             $table->bigInteger('kontak')->nullable(false);
             $table->string('email', 70)->unique()->nullable(false);
-            $table->string('bidang_studi', 100)->nullable(false);
             $table->timestamps();
         });
     }
