@@ -78,7 +78,6 @@ class DosenMatakuliahController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
         $validator = Validator::make($request->all(),[
-            'id' => "required|unique:dosen_matakuliah,id",
             "id_dosen" => "required|exists:dosen,nim",
             "id_matakuliah" => "required|exists:matakuliah,kode"
         ]);
@@ -86,12 +85,10 @@ class DosenMatakuliahController extends Controller
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
 
-        $kode = $request->input('id');
         $id_dosen = $request->input('id_dosen');
         $id_matakuliah = $request->input('id_matakuliah');
 
         $dosenPembimbing = new DosenMatakuliah;
-        $dosenPembimbing->id = $kode;
         $dosenPembimbing->id_dosen = $id_dosen;
         $dosenPembimbing->id_matakuliah = $id_matakuliah;
 
@@ -104,7 +101,6 @@ class DosenMatakuliahController extends Controller
         $response = [
             'message' => 'Data Dosen Successfully Created',
             'data' => [
-                "id" => $kode,
                 "id_dosen" => $dosen->nama,
                 "id_matakuliah" => $matakuliah->nama_matakuliah
             ]
@@ -160,7 +156,6 @@ class DosenMatakuliahController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
         $validator = Validator::make($request->all(),[
-            'id' => "required|unique:dosen_matakuliah,id",
             "id_dosen" => "required|exists:dosen,nim",
             "id_matakuliah" => "required|exists:matakuliah,kode"
         ]);
@@ -177,11 +172,9 @@ class DosenMatakuliahController extends Controller
 
         $dosen = Dosen::find($id_dosen);
         $matakuliah = Matakuliah::find($id_matakuliah);
-        $kode = $request->input('id');
         $response = [
             'message' => 'Data Dosen Successfully Update',
             'data' => [
-                "id" => $kode,
                 "id_dosen" => $dosen->nama,
                 "id_matakuliah" => $matakuliah->nama_matakuliah
             ]
@@ -202,6 +195,6 @@ class DosenMatakuliahController extends Controller
             return response()->json(['error'=>'Delete is Failed'], 404);
         }
 
-        return response()->json(["message"=>"Successfully"], 204);
+        return response()->json(["message"=>"Successfully"], 200);
     }
 }

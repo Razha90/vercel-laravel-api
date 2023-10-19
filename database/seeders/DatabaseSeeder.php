@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Dosen::factory(100)->create();
-        // mahasiswa::factory(100)->create();
+        mahasiswa::factory(100)->create();
         // DosenPembimbing::factory(200) -> create();
         // Matakuliah::factory(100)->create();
         // DosenMatakuliah::factory(200)->create();
-        Matakuliah_Mahasiswa::factory(200)->create();
+        // Matakuliah_Mahasiswa::factory(200)->create();
     }
 }

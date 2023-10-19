@@ -13,7 +13,6 @@ class Dosen extends Model
     public $timestamps = true;
     public $incrementing = true;
     protected $fillable = [
-        'nim',
         'nama',
         'kontak',
         'email',

@@ -14,7 +14,6 @@ class Matakuliah_Mahasiswa extends Model
     public $timestamps = true;
     public $incrementing = true;
     protected $fillable = [
-        'id',
         'id_mahasiswa',
         'id_matakuliah'
     ];

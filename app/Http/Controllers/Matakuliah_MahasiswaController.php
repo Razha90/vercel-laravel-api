@@ -105,7 +105,6 @@ class Matakuliah_MahasiswaController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'kode' => 'required|numeric|unique:matakuliah_mahasiswa,kode',
             'id_mahasiswa' => 'required|numeric|exists:mahasiswa,nim',
             'id_matakuliah'=>'required|numeric|exists:matakuliah,kode'
 
@@ -116,11 +115,9 @@ class Matakuliah_MahasiswaController extends Controller
         }
 
         $kelas = new Matakuliah_Mahasiswa;
-        $kode = $request->input('kode');
         $id_mahasiswa = $request->input('id_mahasiswa');
         $id_matakuliah = $request->input('id_matakuliah');
 
-        $kelas->kode = $kode;
         $kelas->id_matakuliah = $id_matakuliah;
         $kelas->id_mahasiswa = $id_mahasiswa;
 
@@ -131,7 +128,6 @@ class Matakuliah_MahasiswaController extends Controller
         $response = [
             'message' => "Successfully Save Data",
             "data" => [
-                "kode" => $kode,
                 "id_mahasiswa" => $id_mahasiswa,
                 "id_matakuliah" => $id_mahasiswa 
             ]
@@ -147,7 +143,6 @@ class Matakuliah_MahasiswaController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'kode' => 'required|numeric|unique:matakuliah_mahasiswa,kode',
             'id_mahasiswa' => 'required|numeric|exists:mahasiswa,nim',
             'id_matakuliah'=>'required|numeric|exists:matakuliah,kode'
         ]);
@@ -171,7 +166,6 @@ class Matakuliah_MahasiswaController extends Controller
         $response = [
             'message'=>'Data Successfully Update',
             'data' => [
-                'kode' => $request->input('kode'),
                 'id_mahasiswa' => $mahasiswa->nama,
                 "id_matakuliah" => $matakuliah->nama_matakuliah
             ]

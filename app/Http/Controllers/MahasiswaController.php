@@ -6,6 +6,8 @@ use App\Models\mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 class MahasiswaController extends Controller
 {
@@ -65,7 +67,6 @@ class MahasiswaController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
             $validator = Validator::make($request->all(), [
-                'nim' => 'required|unique:mahasiswa,nim',
                 'nama' => 'required|string|max:100',
                 'kontak' => 'required|numeric',
                 'email' => 'required|email|unique:mahasiswa,email',
@@ -76,26 +77,22 @@ class MahasiswaController extends Controller
                 return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
             }
 
-            $nim = $request->input('nim');
             $nama = $request->input('nama');
             $kontak = $request->input('kontak');
             $email = $request->input('email');
             $alamat = $request->input('alamat');
     
             $mahasiswa = new Mahasiswa;
-            $mahasiswa->nim = $nim;
             $mahasiswa->nama = $nama;
             $mahasiswa->kontak = $kontak;
             $mahasiswa->email = $email;
             $mahasiswa->alamat = $alamat;
-        
             if (!$mahasiswa->save()) {
                 return response()->json(['error' => 'Failed to save Mahasiswa, Database Server Problem'], 500);
             }
             $response = [
                 'message' => 'Data Mahasiswa Successfully Created',
                 'data' => [
-                    "nim" => $nim,
                     "nama" => $nama,
                     "kontak" => $kontak,
                     "email" => $email,
@@ -140,7 +137,6 @@ class MahasiswaController extends Controller
         }
         if ($request->isMethod('put')) {
             $validator = Validator::make($request->all(), [
-                'nim' => 'required|numeric|unique:mahasiswa,nim',
                 'nama' => 'required|string|max:100',
                 'kontak' => 'required|numeric',
                 'email' => 'required|email|unique:mahasiswa,email',
@@ -153,7 +149,6 @@ class MahasiswaController extends Controller
 
         } elseif ($request->isMethod('patch')) {
             $validator = Validator::make($request->all(), [
-                'nim' => 'sometimes|required|unique:mahasiswa,nim,' . $id,
                 'nama' => 'sometimes|required|string|max:100',
                 'kontak' => 'sometimes|required|numeric',
                 'email' => 'sometimes|required|email|unique:mahasiswa,email,' . $id,
@@ -205,7 +200,7 @@ class MahasiswaController extends Controller
         if ($checkDelete) {
             return response()->json([
                 "message" => "Data Mahasiswa Successfully Delete"
-            ], 204);
+            ], 200);
         } else {
             $response = [
                 "error" => "Data Cannot Delete"

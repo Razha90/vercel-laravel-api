@@ -13,11 +13,9 @@ class Matakuliah extends Model
     public $timestamps = true;
     public $incrementing = true;
     protected $fillable = [
-        'kode',
         'nama_matakuliah',
         'jadwal',
         'daya_tampung',
-        'id_dosen'
     ];
 
 

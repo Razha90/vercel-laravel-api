@@ -83,7 +83,6 @@ class MatakuliahController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
         $validator = Validator::make($request->all(),[
-            'kode' => "required|unique:matakuliah,kode",
             'nama_matakuliah' => 'required|max:100',
             "daya_tampung" => 'required|numeric',
             'jadwal'=> 'required'
@@ -93,12 +92,10 @@ class MatakuliahController extends Controller
         }
 
         $matakuliah = new Matakuliah;
-        $kode = $request->input('kode');
         $nama_matakuliah = $request->input('nama_matakuliah');
         $daya_tampung = $request->input('daya_tampung');
         $jadwal = $request->input('jadwal');
 
-        $matakuliah->kode = $request->input('kode');
         $matakuliah->nama_matakuliah = $request->input('nama_matakuliah');
         $matakuliah->daya_tampung = $request->input('daya_tampung');
         $matakuliah->jadwal = $request->input('jadwal');
@@ -110,7 +107,6 @@ class MatakuliahController extends Controller
         $response = [
             'message' => 'Data Dosen Successfully Created',
             'data' => [
-                "kode" => $kode,
                 "nama_matakuliah" => $nama_matakuliah,
                 "daya_tampung" => $daya_tampung,
                 "jadwal" => $jadwal,
@@ -126,7 +122,6 @@ class MatakuliahController extends Controller
         }
         
         $validator = Validator::make($request->all(),[
-            'kode' => "required|unique:matakuliah,kode",
             'nama_matakuliah' => 'required|max:100',
             "daya_tampung" => 'required|numeric',
             'jadwal'=> 'required',
@@ -137,7 +132,6 @@ class MatakuliahController extends Controller
 
         $matakuliah = Matakuliah::find($id);
 
-        $kode = $request->input('kode');
         $nama_matakuliah = $request->input('nama_matakuliah');
         $daya_tampung = $request->input('daya_tampung');
         $jadwal = $request->input('jadwal');
@@ -149,7 +143,7 @@ class MatakuliahController extends Controller
         $response = [
             'message' => 'Data Dosen Successfully Created',
             'data' => [
-                "kode" => $kode,
+                "kode" => $matakuliah->kode,
                 "nama_matakuliah" => $nama_matakuliah,
                 "daya_tampung" => $daya_tampung,
                 "jadwal" => $jadwal,
@@ -184,7 +178,7 @@ class MatakuliahController extends Controller
             return response()->json($response, 404);
         }
 
-        return response()->json(['message'=>'Successfully Delete'],204);
+        return response()->json(['message'=>'Successfully Delete'],200);
     }
 }
 

@@ -63,7 +63,6 @@ class DosenController extends Controller
             return response()->json(['message' => 'Failed to connect to the database'], 500);
         }
             $validator = Validator::make($request->all(), [
-                'nim' => 'required|unique:dosen,nim',
                 'nama' => 'required|string|max:100',
                 'kontak' => 'required|numeric',
                 'email' => 'required|email|unique:dosen,email'
@@ -73,13 +72,11 @@ class DosenController extends Controller
                 return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
             }
 
-            $nim = $request->input('nim');
             $nama = $request->input('nama');
             $kontak = $request->input('kontak');
             $email = $request->input('email');
     
             $dosen = new Dosen;
-            $dosen->nim = $nim;
             $dosen->nama = $nama;
             $dosen->kontak = $kontak;
             $dosen->email = $email;
@@ -90,7 +87,6 @@ class DosenController extends Controller
             $response = [
                 'message' => 'Data Dosen Successfully Created',
                 'data' => [
-                    "nim" => $nim,
                     "nama" => $nama,
                     "kontak" => $kontak,
                     "email" => $email,
@@ -134,7 +130,6 @@ class DosenController extends Controller
         }
         if ($request->isMethod('put')) {
             $validator = Validator::make($request->all(), [
-                'nim' => 'required|numeric|unique:dosen,nim',
                 'nama' => 'required|string|max:100',
                 'kontak' => 'required|numeric',
                 'email' => 'required|email|unique:dosen,email',
@@ -146,7 +141,6 @@ class DosenController extends Controller
 
         } elseif ($request->isMethod('patch')) {
             $validator = Validator::make($request->all(), [
-                'nim' => 'sometimes|required|unique:dosen,nim,' . $id,
                 'nama' => 'sometimes|required|string|max:100',
                 'kontak' => 'sometimes|required|numeric',
                 'email' => 'sometimes|required|email|unique:dosen,email,' . $id,
@@ -197,7 +191,7 @@ class DosenController extends Controller
         if ($checkDelete) {
             return response()->json([
                 "message" => "Data Dosen Successfully Delete"
-            ], 204);
+            ], 200);
         } else {
             $response = [
                 "error" => "Data Cannot Delete"

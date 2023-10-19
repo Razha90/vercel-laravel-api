@@ -13,7 +13,6 @@ class DosenMatakuliah extends Model
     public $timestamps = true;
     public $incrementing = true;
     protected $fillable = [
-        'id',
         'id_dosen',
         'id_matakuliah',
     ];
