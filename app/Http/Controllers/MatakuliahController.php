@@ -132,12 +132,15 @@ class MatakuliahController extends Controller
 
         $matakuliah = Matakuliah::find($id);
 
+        if ($matakuliah == null) {
+            return response()->json(['message'=> 'Data Not Found'], 404);
+        }
         $nama_matakuliah = $request->input('nama_matakuliah');
         $daya_tampung = $request->input('daya_tampung');
         $jadwal = $request->input('jadwal');
 
         if (!$matakuliah->update($request->all())) {
-            return response()->json(['error' => 'Failed to save Dosen, Database Server Problem'], 500);
+            return response()->json(['error' => 'Failed to save Dosen, Database Server Problem'], 200);
         }
 
         $response = [
