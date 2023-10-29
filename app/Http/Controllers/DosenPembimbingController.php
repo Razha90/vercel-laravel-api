@@ -144,7 +144,7 @@ class DosenPembimbingController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
-        $dosenPembimbing = DosenPembimbing::where('id',$id);
+        $dosenPembimbing = DosenPembimbing::find($id);
         if ($dosenPembimbing == null) {
             return response()->json(['error'=>'Cannot Find Id'], 404);
         }
