@@ -162,7 +162,7 @@ class DosenMatakuliahController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
-        $dosenMatakuliah = DosenMatakuliah::where('id',$id);
+        $dosenMatakuliah = DosenMatakuliah::find($id);
         if ($dosenMatakuliah == null) {
             return response()->json(['error'=>'Cannot Find Id'], 404);
         }
