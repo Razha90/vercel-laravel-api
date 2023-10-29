@@ -179,7 +179,7 @@ class DosenMatakuliahController extends Controller
                 "id_matakuliah" => $matakuliah->nama_matakuliah
             ]
         ];
-        return response()->json($response, 201);
+        return response()->json($response, 200);
     }
 
     /**
