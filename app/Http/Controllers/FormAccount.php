@@ -80,4 +80,9 @@ class FormAccount extends Controller
             ]
     ], 200);
     }  
+
+    public function logs() {
+        $logContent = file_get_contents(storage_path('logs/acess.log'));
+        return dd($logContent);
+    }
 }
