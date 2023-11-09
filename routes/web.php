@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DosenMatakuliahController;
+use App\Http\Controllers\FormAccount;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DosenPembimbingController;
 use App\Http\Controllers\Matakuliah_MahasiswaController;
 use App\Http\Controllers\MatakuliahController;
+use App\Http\Middleware\ApiAuthen;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,8 +24,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/login', [FormAccount::class, 'login']);
+Route::post('/register', [FormAccount::class, 'register']);
 
-Route::get('/dosen', [DosenController::class, 'index']);
+Route::middleware([ApiAuthen::class])->group(function () {
+    Route::get('/dosen', [DosenController::class, 'index']);
+});
 Route::get('/dosen/{id}', [DosenController::class, 'show']);
 Route::post('/dosen', [DosenController::class, 'store']);
 Route::put('/dosen/{id}', [DosenController::class, 'update']);
